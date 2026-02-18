@@ -29,7 +29,7 @@ This makes NAT the most practical solution when only one physical wired connecti
  ((( ((( Wi-Fi signal ))) )))
                |
     +--------------------+
-    |      Host          |
+    |       Host         |
     |  WI-FI + Ethernet  |
     |    (NAT/DHCP)      |
     +--------------------+
