@@ -20,18 +20,19 @@ This makes NAT the most practical solution when only one physical wired connecti
         | Internet  |
         +-----------+
                |
+            Ethernet
                |
         +-----------+
         |  Router   |
         +-----------+
                |
-       ))) ))) )))  ← Wi-Fi signal
+ ((( ((( Wi-Fi signal ))) )))
                |
-     +------------------+
-     |      Host        |
-     |  WIFI + Ethernet |
-     |    (NAT/DHCP)    |
-     +------------------+
+    +--------------------+
+    |      Host          |
+    |  WI-FI + Ethernet  |
+    |    (NAT/DHCP)      |
+    +--------------------+
                |
             Ethernet
                |
