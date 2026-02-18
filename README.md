@@ -22,7 +22,6 @@ This makes NAT the most practical solution when only one physical wired connecti
         | Internet  |
         +-----------+
                |
-           (Wi-Fi)
                |
         +-----------+
         |  Router   |
