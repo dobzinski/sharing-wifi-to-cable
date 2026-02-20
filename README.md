@@ -43,7 +43,72 @@ This makes NAT the most practical solution when only one physical wired connecti
 
 ## Linux
 
-_Creating a Lab Network_
+This lab demonstrates how to configure a Linux machine as a router, providing NAT and DHCP services to an internal network.
+
+**Topology**
+   - External interface: wlo1 (Internet)
+   - Internal interface: enp44s0 (LAN 192.168.137.0/24)
+
+**Steps:**
+
+1. Open Linux Network Settings.
+
+2. Assign a static IPv4 address to the internal network interface.
+```
+192.168.137.1/24
+```
+
+3. To enable IPv4 forwarding, edit "/etc/sysctl.conf" and add the following line at the end of the file:
+```
+net.ipv4.ip_forward=1
+```
+
+4. Apply the changes:
+```
+sudo sysctl -p
+```
+
+5. Configure NAT (Masquerading) to allow internal clients to access the internet.
+
+   - _Note: To make these rules persistent, configure them to load at boot._
+
+```
+sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+sudo iptables -A FORWARD -i wlo1 -o enp44s0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i enp44s0 -o wlo1 -j ACCEPT
+```
+
+6. If the client devices are not configured with manual IP addresses, install the "isc-dhcp-server" package to provide DHCP services.
+
+7. Check and add configurations in "/etc/dhcp/dhcpd.conf".
+```
+(comment both lines)
+#option domain-name "example.org";
+#option domain-name-servers ns1.example.org, ns2.example.org;
+
+(uncomment the line)
+authoritative;
+
+(add to the end file)
+subnet 192.168.137.0 netmask 255.255.255.0 {
+  range 192.168.137.100 192.168.137.200;
+  option routers 192.168.137.1;
+  option domain-name-servers 8.8.8.8;
+}
+```
+
+8. Bind the DHCP service to the correct interface by editing "/etc/default/isc-dhcp-server".
+```
+INTERFACESv4="enp44s0"
+```
+
+9. Enable and start the DHCP service.
+```
+sudo systemctl enable --now isc-dhcp-server
+```
+
+10. Done!
+
 
 ## Windows
 
